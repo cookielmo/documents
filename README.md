@@ -16,6 +16,18 @@ $ chsh
 シェルを変更しました。
 ```
 
+#公開鍵・秘密鍵
+#####鍵の生成
+```
+ssh-keygen -t rsa
+```
+#####サーバに公開鍵の登録
+```
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote_host
+```
+Macではデフォルトでは`ssh-copy-id`がないので`brew install ssh-copy-id`という感じに導入しておく必要がある。
+
+
 ##mySQLの設定
 ##rootのパスワード初期化
 #####起動中のmySQLを停止
