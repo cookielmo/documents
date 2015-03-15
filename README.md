@@ -46,14 +46,21 @@ select user, host from mysql.user;
 ```
 #####ユーザ権限の確認
 ```
-show grants for 'hoge'@'%';
+show grants for 'hoge'@'host';
 ```
 #####ユーザの作成
 ```
+create user user_name;
 create user user_name identified by passwd;
 ```
-####権限の付与
+#####権限の付与
 ```
-grant select, insert, update on *.* to sjala indentified by passwd;
+grant select, insert, update on *.* to hoge;
+grant select, insert, update on *.* to hoge indentified by passwd;
+```
+#####パスワードの設定
+```
+set password = password('hogehoge');
+set password for user = password('hogehoge');
 ```
 
