@@ -1,4 +1,5 @@
-#Scraping with Ruby
+#Ruby
+##Scraping with Ruby
 #####Nokogiriのインストール
 ```
 $ gen install nokogiri
