@@ -55,3 +55,19 @@ doc.xpath('//li[@class="mdTopMTMList01Item"]').each do |node|
   p node.css('a').attribute('href').value
 end
 ```
+
+##mySQL
+#####ruby-mysqlのインストール
+```
+$ gem install ruby-mysql
+```
+#####Sample
+```ruby
+require 'mysql'
+client= Mysql.connect('hostname', 'username', 'password', 'dbname')
+client.query("SELECT col1, col2 FROM tblname").each do |col1, col2|
+  p col1, col2
+end
+stmt = client.prepare('INSERT INTO tblname (col1,col2) VALUES (?,?)')
+stmt.execute 123, 'abc'
+```
