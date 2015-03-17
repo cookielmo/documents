@@ -1,3 +1,4 @@
+#README
 - [サーバー環境設定](/server_setting.md)
  - [zshの導入](/server_setting.md#zshの導入)
  - [公開鍵・秘密鍵](/server_setting.md#公開鍵・秘密鍵)
