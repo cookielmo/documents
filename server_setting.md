@@ -6,7 +6,7 @@ $ cat /etc/shells
 ```
 #####インストール
 ```
-$ sudo yum install zsh
+$ yum install zsh
 ```
 #####ログインシェルの変更
 ```
@@ -18,7 +18,7 @@ $ chsh
 
 ##Gitのupdate
 ```
-$ sudo yum remove git
+$ yum remove git
 $ yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 $ wget https://www.kernel.org/pub/software/scm/git/git-2.3.3.tar.gz
 $ tar -zxf git-2.3.3.tar.gz
@@ -44,7 +44,7 @@ Macではデフォルトでは`ssh-copy-id`がないので`brew install ssh-copy
 ##rootのパスワード初期化
 #####起動中のmySQLを停止
 ```
-sudo servicd mysqld stop
+service mysqld stop
 ```
 #####mySQLをセーフモードで起動
 ```
@@ -52,7 +52,7 @@ mysqld_safe --skip-grant-tables &
 ```
 #####rootでログイン
 ```
-sudo mysql -u root
+mysql -u root
 ```
 #####パスワードの変更
 ```
