@@ -16,6 +16,18 @@ $ chsh
 シェルを変更しました。
 ```
 
+##Gitのupdate
+```
+$ sudo yum remove git
+$ yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
+$ wget https://www.kernel.org/pub/software/scm/git/git-2.3.3.tar.gz
+$ tar -zxf git-2.3.3.tar.gz
+$ cd git-2.3.0
+$ make prefix=/usr/local all
+$ make prefix=/usr/local install
+$ git --ver
+```
+
 ##公開鍵・秘密鍵
 #####鍵の生成
 ```
