@@ -75,4 +75,25 @@ grant select, insert, update on *.* to hoge indentified by passwd;
 set password = password('hogehoge');
 set password for user = password('hogehoge');
 ```
-
+##Rubyのインストール
+#####rvmのインストール
+```
+$ curl -sSL https://get.rvm.io | bash -s stable
+```
+#####インストールできるバージョンの一覧を確認
+```
+$ rvm list known
+```
+#####インストール
+```
+$ rvm install 2.2
+```
+#####利用するバージョンを指定する
+```
+$ rvm use 2.2
+```
+#####確認
+```
+$ ruby -v
+$ which ruby
+```
