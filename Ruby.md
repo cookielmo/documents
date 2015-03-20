@@ -1,7 +1,7 @@
 #Ruby
 ##Scraping with Ruby
 #####Nokogiriのインストール
-```
+```sh
 $ gem install nokogiri
 ```
 #####Sample1
@@ -58,7 +58,7 @@ end
 
 ##mySQL
 #####ruby-mysqlのインストール
-```
+```sh
 $ gem install ruby-mysql
 ```
 #####Sample

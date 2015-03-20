@@ -141,5 +141,47 @@ $ rbenv rehash
 $ rbenv gobal 2.2.0
 ```
 
-###[rvmのインストール](ruby/rvm.md)
+##rvm
+#####インストール
+```sh
+$ curl -sSL https://get.rvm.io | bash -s stable
+
+#失敗するようならsudoで実行してみる
+$ curl -sSL https://get.rvm.io | sudo bash -s stable
+```
+#####zshrcの編集
+```
+# Linux
+source usr/local/rvm/scripts/rvm
+export rvmsudo_secure_path=1
+
+# Mac
+source ~/.rvm/scripts/rvm
+```
+##### update
+root権限が必要な場合は、`sudo`の代わりに`rmvsudo`を使う。
+```sh
+$ rvm get latest
+
+$ rvm reload
+```
+
+#####インストールできるバージョンの一覧を確認
+```sh
+$ rvm list known
+```
+#####インストール
+```sh
+$ rvm install 2.2
+```
+#####利用するバージョンを指定する
+```sh
+$ rvm use 2.2
+```
+#####確認
+```sh
+$ ruby -v
+$ which ruby
+```
+
 
