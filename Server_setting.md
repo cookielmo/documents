@@ -97,6 +97,10 @@ set password for user = password('hogehoge');
 ```
 $ curl -sSL https://get.rvm.io | bash -s stable
 ```
+失敗するようならsudoで実行してみる
+```
+$ curl -sSL https://get.rvm.io | sudo bash -s stable 
+```
 #####zshrcの編集
 ```
 # Linux
