@@ -93,53 +93,53 @@ set password for user = password('hogehoge');
 ```
 
 ##Rubyのインストール
-#####rbenvのインストール
+###rbenv
 まず`rvm`をインストールしてしまった場合はアンインストールする。
-```
+```sh
 $ rvm seppuku
 ```
+#####rbenvのインストール
+今回はシステムワイドな利用を想定して`su -`でsuperuserになって作業する。
 
 
-#####rvmのインストール
-<!-- more -->
-```
-$ curl -sSL https://get.rvm.io | bash -s stable
-```
-失敗するようならsudoで実行してみる
-```
-$ curl -sSL https://get.rvm.io | sudo bash -s stable
-```
-#####zshrcの編集
-```
-# Linux
-source usr/local/rvm/scripts/rvm
-export rvmsudo_secure_path=1
+```sh
+# 必要なパッケージの導入
+$ yum install -y git gcc gcc-c++ openssl-devel readline-devel
 
-# Mac
-source ~/.rvm/scripts/rvm
-```
-##### update
-root権限が必要な場合は、`sudo`の代わりに`rmvsudo`を使う。
-```
-$ rvm get latest
-
-$ rvm reload
+# gitからソース取得して配置
+$ cd /usr/local
+$ git clone git://github.com/sstephenson/rbenv.git rbenv
+$ git clone git://github.com/sstephenson/ruby-build.git rbenv/plugins/ruby-build
 ```
 
-#####インストールできるバージョンの一覧を確認
+#####rbenvの設定
+
+```sh
+export RBENV_ROOT="/usr/local/rbenv"
+export PATH="${RBENV_ROOT}/bin:${PATH}"
+eval "$(rbenv init --no-rehash -)"
 ```
-$ rvm list known
+を`/etc/profile.d/rbenv.sh`に保存
+
+#####gemのインストール
+```sh
+$ rbenv exec gem install bundler
 ```
-#####インストール
+
+#####rbenvの使い方
+```sh
+# 一覧の取得
+$ rbenv install --list
+
+# インストール
+$ rbenv install 2.2.0
+
+# 再度読み込み
+$ rbenv rehash
+
+# システムワイドに利用するrubyのバージョンを指定
+$ rbenv gobal 2.2.0
 ```
-$ rvm install 2.2
-```
-#####利用するバージョンを指定する
-```
-$ rvm use 2.2
-```
-#####確認
-```
-$ ruby -v
-$ which ruby
-```
+
+###[rvmのインストール](ruby/rvm.md)
+
