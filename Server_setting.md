@@ -94,6 +94,10 @@ set password for user = password('hogehoge');
 
 ##Rubyのインストール
 ###rbenv
+参考：
+http://qiita.com/chezou/items/86ee6ded253c094a23b6
+http://office.tsukuba-bunko.org/ppoi/entry/systemwide-rbenv
+
 まず`rvm`をインストールしてしまった場合はアンインストールする。
 ```sh
 $ rvm seppuku
@@ -162,7 +166,6 @@ source ~/.rvm/scripts/rvm
 root権限が必要な場合は、`sudo`の代わりに`rmvsudo`を使う。
 ```sh
 $ rvm get latest
-
 $ rvm reload
 ```
 

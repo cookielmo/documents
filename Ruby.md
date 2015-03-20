@@ -57,17 +57,24 @@ end
 ```
 
 ##mySQL
-#####ruby-mysqlのインストール
+#####mysql2のインストール
 ```sh
-$ gem install ruby-mysql
+$ gem install mysql2
 ```
+`mysql-devel`がインストールされていないとエラーを吐かれる。
+
 #####Sample
 ```ruby
-require 'mysql'
-client= Mysql.connect('hostname', 'username', 'password', 'dbname')
-client.query("SELECT col1, col2 FROM tblname").each do |col1, col2|
-  p col1, col2
-end
-stmt = client.prepare('INSERT INTO tblname (col1,col2) VALUES (?,?)')
-stmt.execute 123, 'abc'
+require 'mysql2'
+
+client = Mysql2::Client.new(:host => 'localhost', :username => 'root', :database => 'dbname')
+ query = %q{select * from table_name}
+ results = client.query(query)
+ results.each do |row|
+   puts "--------------------"
+   row.each do |key, value|
+     puts "#{key} => #{value}"
+   end
+ end
+
 ```
