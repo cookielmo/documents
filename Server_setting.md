@@ -93,13 +93,21 @@ set password for user = password('hogehoge');
 ```
 
 ##Rubyのインストール
+#####rbenvのインストール
+まず`rvm`をインストールしてしまった場合はアンインストールする。
+```
+$ rvm seppuku
+```
+
+
 #####rvmのインストール
+<!-- more -->
 ```
 $ curl -sSL https://get.rvm.io | bash -s stable
 ```
 失敗するようならsudoで実行してみる
 ```
-$ curl -sSL https://get.rvm.io | sudo bash -s stable 
+$ curl -sSL https://get.rvm.io | sudo bash -s stable
 ```
 #####zshrcの編集
 ```
