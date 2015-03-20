@@ -2,7 +2,7 @@
 ##Scraping with Ruby
 #####Nokogiriのインストール
 ```
-$ gen install nokogiri
+$ gem install nokogiri
 ```
 #####Sample1
 ```ruby
