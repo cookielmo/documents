@@ -1,17 +1,14 @@
 # サーバー構築
 ## zshの導入
 
-##### インストールされているシェル一覧
 ```sh
+# インストールされているシェル一覧
 $ cat /etc/shells
-```
 
-##### インストール
-```sh
+# インストール
 $ yum install zsh
-```
 
-##### ログインシェルの変更
+# ログインシェルの変更
 ```sh
 $ chsh
 パスワード：
@@ -33,13 +30,11 @@ $ git --ver
 
 ## 公開鍵・秘密鍵
 
-##### 鍵の生成
 ```sh
+# 鍵の生成
 $ ssh-keygen -t rsa
-```
 
-##### サーバに公開鍵の登録
-```sh
+# サーバに公開鍵の登録
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote_host
 ```
 Macではデフォルトでは`ssh-copy-id`がないので`brew install ssh-copy-id`という感じに導入しておく必要がある。
@@ -49,45 +44,48 @@ Macではデフォルトでは`ssh-copy-id`がないので`brew install ssh-copy
 $ ym install expect
 ```
 
+## Run Level
+| Level |                      mean                      |
+| :---: | :--------------------------------------------- |
+|   0   | シャットダウン（システムの停止）               |
+|   1   | シングルユーザーモード（rootのみ）             |
+|   2   | ネットワークなしのマルチユーザーモード         |
+|   3   | 通常のマルチユーザーモード（テキストログイン） |
+|   4   | 未使用                                         |
+|   5   | グラフィカルログインによるマルチユーザーモード |
+|   6   | システムの再起動                               |
 
-## mySQLの導入
+## MySQLの導入
 参考：http://www.kakiro-web.com/linux/centos6-mysql-yum-repository-install.html
 
-##### インストール
 ```sh
+# インストール
 $ wget http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
 $ yum --enablerepo=mysql56-community install mysql-community-server
-```
 
-##### サービスの起動
-```sh
+# サービスの起動
 $ service mysqld start
+
+# 自動起動
+$ chkconfig mysqld on
 ```
 
-##### 登録されているユーザの確認
 ```sql
+-- 登録されているユーザの確認
 select user, host from mysql.user;
-```
 
-##### ユーザ権限の確認
-```sql
+-- ユーザ権限の確認
 show grants for 'hoge'@'host';
-```
 
-##### ユーザの作成
-```sql
+-- ユーザの作成
 create user user_name;
 create user user_name identified by passwd;
-```
 
-##### 権限の付与
-```sql
+-- 権限の付与
 grant select, insert, update on *.* to hoge;
 grant select, insert, update on *.* to hoge indentified by passwd;
-```
 
-##### パスワードの設定
-```sql
+-- パスワードの設定
 set password = password('hogehoge');
 set password for user = password('hogehoge');
 ```
@@ -169,27 +167,25 @@ $ rvm get latest
 $ rvm reload
 ```
 
-##### インストールできるバージョンの一覧を確認
+##### rvmの使い方
 ```sh
+# インストールできるバージョンの一覧を確認
 $ rvm list known
-```
-##### インストール
-```sh
+
+# インストール
 $ rvm install 2.2
-```
-##### 利用するバージョンを指定する
-```sh
+
+# 利用するバージョンを指定する
 $ rvm use 2.2
-```
-##### 確認
-```sh
+
+# 確認
 $ ruby -v
 $ which ruby
 ```
 
 ## Apache
 参考：http://www.kakiro-web.com/linux/centos6-apache-install.html
-#### APRのインストール
+##### APRのインストール
 ```sh
 # ソースのダウンロード
 $ wget http://archive.apache.org/dist/apr/apr-1.5.1.tar.bz2
@@ -201,14 +197,14 @@ $ rpmbuild -tb --clean apr-1.5.1.tar.bz2
 $ rpm -Uvh apr-1.5.1-1.x86_64.rpm apr-devel-1.5.1-1.x86_64.rpm
 ```
 
-#### freetds-devlのインストール
+##### freetds-devlのインストール
 EPELのリポジトリからインストールを行う。<br>
 ※ リポジトリを追加していない場合は http://www.kakiro-web.com/linux/centos6-epel-install.html を参考に行う。
 ```sh
 $ yum --enablerepo=epel install freetds-devel
 ```
 
-#### APR-utilのインストール
+##### APR-utilのインストール
 ```sh
 # ソースのダウンロード
 $ wget http://archive.apache.org/dist/apr/apr-util-1.5.4.tar.bz2
@@ -219,7 +215,8 @@ $ rpmbuild -tb --clean apr-util-1.5.4.tar.bz2
 # インストール
 $ rpm -Uvh apr-util-1.5.4-1.x86_64.rpm apr-util-devel-1.5.4-1.x86_64.rpm
 ```
-#### distcache-develのインストール
+
+##### distcache-develのインストール
 ```sh
 # ソースの取得
 $ wget http://ftp.riken.jp/Linux/fedora/releases/16/Everything/source/SRPMS/distcache-1.4.5-22.src.rpm
@@ -231,7 +228,7 @@ $ rpmbuild --rebuild --clean distcache-1.4.5-22.src.rpm
 $ rpm -Uvh distcache-1.4.5-22.x86_64.rpm distcache-devel-1.4.5-22.x86_64.rpm
 ```
 
-#### Apacheのインストール
+##### Apacheのインストール
 ```sh
 # ソースのダウンロード
 $ wget http://archive.apache.org/dist/httpd/httpd-2.4.9.tar.bz2
@@ -242,3 +239,27 @@ $ rpmbuild -tb --clean httpd-2.4.9.tar.bz2
 # インストール
 $ rpm -Uvh httpd-2.4.9-1.x86_64.rpm httpd-devel-2.4.9-1.x86_64.rpm
 ```
+
+##### apachectlの使い方的なもの
+|        command         |           effect           |
+| :--------------------- | :------------------------- |
+| apachectl -V           | バージョンの確認           |
+| apachectl configtest   | 設定ファルのSyntaxチェック |
+| apachectl start        | サービスの開始             |
+| apachectl restart      | サービスの再起動           |
+| apachectl stop         | サービスの終了             |
+| apachectl httpd reload | 設定ファルのリロード       |
+
+##### 関連ファイル
+|            path            |        contents        |
+| :------------------------- | :--------------------- |
+| /etc/httpd/conf/httpd.conf | 設定ファイル           |
+| /var/log/httpd/error_l     | エラーログ (default)   |
+| /var/log/httpd/access_log  | アクセスログ (default) |
+
+##### apacheの自動起動設定（service に登録
+```sh
+$ chkconfig httpd on
+```
+
+## php 5.6
