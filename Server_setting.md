@@ -218,7 +218,7 @@ $ rpm -Uvh apr-util-1.5.4-1.x86_64.rpm apr-util-devel-1.5.4-1.x86_64.rpm
 
 ##### distcache-develのインストール
 ```sh
-# ソースの取得
+# ソースのダウンロード
 $ wget http://ftp.riken.jp/Linux/fedora/releases/16/Everything/source/SRPMS/distcache-1.4.5-22.src.rpm
 
 # パッケージの作成
@@ -262,4 +262,105 @@ $ rpm -Uvh httpd-2.4.9-1.x86_64.rpm httpd-devel-2.4.9-1.x86_64.rpm
 $ chkconfig httpd on
 ```
 
-## php 5.6
+##### apacheのMPMの設定
+PHPを利用する場合はpreforkが推奨されている。
+
+`/etc/httpd/conf/httpd.conf` を編集する。
+```sh
+# befor
+LoadModule ssl_module lib64/httpd/modules/mod_ssl.so
+
+# after
+LoadModule ssl_module lib64/httpd/modules/mod_ssl.so
+```
+## PHP5.6
+##### 前準備
+（余分なパッケージがあるかも）
+```sh
+# EPELからインストール
+$ yum --enablerepo=epel install firebird-devel
+$ yum --enablerepo=epel install libmcrypt-devel
+
+# バージョン指定なし
+$ yum install libjpeg-turbo-devel　bzip2-devel pam-devel libedit-devel libtool-ltdl-devel systemtap-sdt-devel libacl-devel libc-client-devel net-snmp-devel t1lib-devel libpng-devel freetype-devel libXpm-devel libvpx-devel gmp-devel tokyocabinet-devel libtidy-deve recode-devel libtidy-devel
+
+#バージョン指定あり
+$ yum install libxslt-devel aspell-devel libicu-devel enchant-devel
+
+```
+##### 本編
+IUSからPHP5.6のSPRMをダウンロードしてRPMを作成し、インストールを行う。
+最新のソース → http://dl.iuscommunity.org/pub/ius/stable/CentOS/6/SRPMS/repoview/php56u.html
+アーカイブ → http://dl.iuscommunity.org/pub/ius/archive/CentOS/6/SRPMS/
+```sh
+# ソースのダウンロード
+$  wget http://dl.iuscommunity.org/pub/ius/archive/CentOS/6/SRPMS/php56u-5.6.4-1.ius.centos6.src.rpm
+
+# パッケージの作成
+$ rpmbuild --rebuild --clean php56u-5.6.4-1.ius.centos6.src.rpm
+```
+`httpd-devel < 2.4 is php56u-5.6.6-2.ius.el6.x86_64` と怒られるが、RPMから httpd-devel を導入した場合はパスが違うので出てしまうようだ。`./rpmbuild/SPECS/php56u.spec`を以下のように変更して対応する。
+```sh
+# 56行目
+# before
+%{!?_httpd_apxs:       %{expand: %%global _httpd_apxs       %%{_sbindir}/apxs}}
+
+# afer
+%{!?_httpd_apxs:       %{expand: %%global _httpd_apxs       %%{_bindir}/apxs}}
+```
+##### 再開
+```sh
+# パッケージの作成
+$ rpmbuild -bb --clean php56u.spec
+
+# 依存関係の解消にとりあえず依存関係を無視してインストール
+$ rpm -Uvh --nodeps php56u-cli-5.6.4-1.ius.el6.x86_64.rpm php56u-xml-5.6.4-1.ius.el6.x86_64.rpm php56u-common-5.6.4-1.ius.el6.x86_64.rpm php56u-process-5.6.4-1.ius.el6.x86_64.rpm php56u-devel-5.6.4-1.ius.el6.x86_64.rpm
+
+# php56u-pearのソースをダウンロード
+$ wget http://dl.iuscommunity.org/pub/ius/stable/CentOS/6/SRPMS/php56u-pear-1.9.5-1.ius.centos6.src.rpm
+
+# php56u-pearのパッケージの作成
+$ rpmbuild --rebuild --clean php56u-pear-1.9.5-1.ius.centos6.src.rpm
+
+# php56u-pearのインストール
+$ rpm -Uvh php56u-pear-1.9.5-1.ius.el6.noarch.rpm
+
+# php56u-pecl-jsoncのソースをダウンロード
+# 最新 → http://dl.iuscommunity.org/pub/ius/stable/CentOS/6/SRPMS/repoview/php56u-pecl-jsonc.html
+$ wget http://dl.iuscommunity.org/pub/ius/stable/CentOS/6/SRPMS/php56u-pecl-jsonc-1.3.7-1.ius.centos6.src.rpm
+
+# php56u-pecl-jsoncのパッケージの作成
+$ rpmbuild --rebuild --clean php56u-pecl-jsonc-1.3.7-1.ius.centos6.src.rpm
+
+# php56u-pecl-jsoncのインストール
+$ rpm -Uvh php56u-pecl-jsonc-1.3.7-1.ius.el6.x86_64.rpm php56u-pecl-jsonc-devel-1.3.7-1.ius.el6.x86_64.rpm
+
+# phpのインストール
+$ rpm -Uvh php56u-5.6.4-1.ius.el6.x86_64.rpm
+
+# その他利用するパッケージの導入
+$ rpm -Uvh php56u-mbstring-5.6.4-1.ius.el6.x86_64.rpm php56u-mysqlnd-5.6.4-1.ius.el6.x86_64.rpm php56u-pdo-5.6.4-1.ius.el6.x86_64.rpm
+```
+
+#### Apacheの設定
+読み込ませるモジュールのパスが実際のものと異なるので変える
+```sh
+$ rpm -ql php56u
+```
+
+`/etc/httpd/conf.d/10-php.conf` を編集
+```sh
+# before
+  LoadModule php5_module modules/libphp5.so
+# after
+  LoadModule php5_module lib64/httpd/modules/libphp5.so
+
+
+# before
+  LoadModule php5_module modules/libphp5-zts.so
+# after
+  LoadModule php5_module lib64/httpd/modules/libphp5-zts.so
+```
+
+##### PHPのモジュールが読み込まれない時は。。。。
+`/etc/httpd/conf/httpd.conf` に `Includeoptional /etc/httpd/conf/*.conf` があるかを確認し、なければ追加する。
