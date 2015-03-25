@@ -436,3 +436,5 @@ SELinuxが有効の場合に`mkdir()`, `fopen`をPHPで実行すると発生す�
 ```sh
 $ chcon -R -t httpd_sys_script_rw_t {target dir}
 ```
+
+exec('sudo hogehoge')を実行する → http://ja.528p.com/linux/centos6/RC004-selinux.html
