@@ -364,3 +364,28 @@ $ rpm -ql php56u
 
 ##### PHPのモジュールが読み込まれない時は。。。。
 `/etc/httpd/conf/httpd.conf` に `Includeoptional /etc/httpd/conf/*.conf` があるかを確認し、なければ追加する。
+
+## FuelPHP
+#### 導入
+```sh
+# oilの取得
+$ curl get.fuelphp.com/oil | sh
+
+# プロジェクトの作成
+$ mkdir /usr/fuel
+$ cd /usr/fuel
+$ oil create {my project name}
+
+# 公開
+$ ln -s /usr/fuel/{my project name} {document root}
+```
+
+##### 設定
+
+
+```apache:'/etc/httpd/conf.d/fuel.conf'
+<Directory /var/www/html/{my project name}>
+     AllowOverride All
+     Require all granted
+</Directory>
+```
