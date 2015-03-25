@@ -264,9 +264,11 @@ $ chkconfig httpd on
 
 ##### apacheのMPMの設定
 PHPを利用する場合はpreforkが推奨されている。
-
-`/etc/httpd/conf/httpd.conf` を編集する。
 ```sh
+# -------------------------------------------
+# file name : /etc/httpd/conf/httpd.conf
+# -------------------------------------------
+
 # befor
 LoadModule ssl_module lib64/httpd/modules/mod_ssl.so
 
@@ -347,9 +349,11 @@ $ rpm -Uvh php56u-mbstring-5.6.4-1.ius.el6.x86_64.rpm php56u-mysqlnd-5.6.4-1.ius
 ```sh
 $ rpm -ql php56u
 ```
-
-`/etc/httpd/conf.d/10-php.conf` を編集
 ```sh
+# -------------------------------------------
+# filename : /etc/httpd/conf.d/10-php.conf
+# ------------------------------------------
+
 # before
   LoadModule php5_module modules/libphp5.so
 # after
@@ -382,10 +386,53 @@ $ ln -s /usr/fuel/{my project name} {document root}
 
 ##### 設定
 
+```apache
+# -------------------------------
+# file name : /etc/httpd/conf.d/fuel.conf
+# --------------------------------
 
-```apache:'/etc/httpd/conf.d/fuel.conf'
 <Directory /var/www/html/{my project name}>
      AllowOverride All
      Require all granted
 </Directory>
+```
+
+```apache
+# -------------------------------
+# file name : public/.htaccess
+# -------------------------------
+
+# <-- 略 -->
+
+    # deal with php5-cgi first
+    <IfModule mod_fcgid.c>
+        # RewriteRule ^(.*)$ index.php?/$1 [QSA,L] # default
+        RewriteRule ^(.*)$ {my project name}/index.php?/$1 [QSA,L]
+    </IfModule>
+
+    <IfModule !mod_fcgid.c>
+
+        # for normal Apache installations
+        <IfModule mod_php5.c>
+            # RewriteRule ^(.*)$ index.php/$1 [L] # default
+            RewriteRule ^(.*)$ {my project name}/index.php/$1 [L]
+        </IfModule>
+
+        # for Apache FGCI installations
+        <IfModule !mod_php5.c>
+            # RewriteRule ^(.*)$ index.php?/$1 [QSA,L] # default
+            RewriteRule ^(.*)$ {my project name}/index.php?/$1 [QSA,L]
+        </IfModule>
+
+    </IfModule>
+
+</IfModule>
+
+```
+
+#### permission denyの対応
+SELinuxが有効の場合に`mkdir()`, `fopen`をPHPで実行すると発生することがある。
+
+```sh
+$ chcon -R -t httpd_sys_script_rw_t {target dir}
 ```
