@@ -441,8 +441,22 @@ exec('sudo hogehoge')を実行する → http://ja.528p.com/linux/centos6/RC004-
 
 
 ## mecab
+#### インストール
 ```sh
 $ rpm -ivh http://packages.groonga.org/centos/groonga-release-1.1.0-1.noarch.rpm
 
 $ yum install groonga-tokenizer-mecab
+```
+
+##### libmecab.soの場所を探す
+```sh
+$ find / -name "libmecab.so*"
+/usr/lib64/libmecab.so.2.0.0
+/usr/lib64/libmecab.so.2
+```
+
+#### 環境変数の設定
+```sh
+# /etc/profile.d/mecab.sh
+export MECAB_PATH=/usr/lib64/libmecab.so.2
 ```
