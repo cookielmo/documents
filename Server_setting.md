@@ -438,3 +438,11 @@ $ chcon -R -t httpd_sys_script_rw_t {target dir}
 ```
 
 exec('sudo hogehoge')を実行する → http://ja.528p.com/linux/centos6/RC004-selinux.html
+
+
+## mecab
+```sh
+$ rpm -ivh http://packages.groonga.org/centos/groonga-release-1.1.0-1.noarch.rpm
+
+$ yum install groonga-tokenizer-mecab
+```
